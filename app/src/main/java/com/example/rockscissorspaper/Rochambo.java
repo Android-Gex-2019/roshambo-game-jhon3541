@@ -86,6 +86,16 @@ public class Rochambo {
         return playerMove;
     }
 
+    public void setGameMove(int gameMove)
+    {
+        this.gameMove = gameMove;
+    }
+
+    public void setPlayerMove(int playerMove)
+    {
+        this.playerMove= playerMove;
+    }
+
     public int winLoseOrDraw() {
 
         if (playerMove == ROCK) {

@@ -35,6 +35,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageView;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView computerImage;
     TextView resultText;
 
+    int computerMove;
+    int playerMove;
+    int result;
+
 
 
     @Override
@@ -59,6 +64,27 @@ public class MainActivity extends AppCompatActivity {
         computerImage = (ImageView) findViewById(R.id.computer);
         resultText = (TextView) findViewById(R.id.result);
 
+        game = new Rochambo();
+
+        //Restore the saved state
+        if (savedInstanceState != null) {
+            computerMove= savedInstanceState.getInt("computer_move");
+            playerMove = savedInstanceState.getInt("player_move");
+            result= savedInstanceState.getInt("result");
+
+            game.setGameMove(computerMove);
+            game.setPlayerMove(playerMove);
+
+            playerImage.setImageResource( playerMove==1 ? R.drawable.paper :
+                    playerMove==0 ? R.drawable.rock : R.drawable.scissors);
+
+            computerImage.setImageResource( computerMove==1 ? R.drawable.paper :
+                    computerMove==0 ? R.drawable.rock : R.drawable.scissors);
+
+            resultText.setText(result == 1 ? getString(R.string.win_text) :
+                    result == 2 ? getString(R.string.lose_text) : getString(R.string.draw_text));
+
+        }
 
     }
 
@@ -67,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void playPaper(View view) {
-
-        game = new Rochambo();
 
         //makes player move
         game.playerMakesMove(1);
@@ -90,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public void playRock(View view) {
 
-        game = new Rochambo();
-
         //makes player move
         game.playerMakesMove(0);
         //change image according to player move
@@ -109,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void playScissor(View view) {
-
-        game = new Rochambo();
 
         //makes player move
         game.playerMakesMove(2);
@@ -130,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     private void computerMove() {
 
         //get computer move
-        int computerMove= game.getGameMove();
+        computerMove= game.getGameMove();
 
         //change image according to computer move
         computerImage.setImageResource( computerMove==1 ? R.drawable.paper :
@@ -144,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
     private void getResult() {
 
         //get result
-        int result = game.winLoseOrDraw();
+        result = game.winLoseOrDraw();
 
         //Print results
-        resultText.setText(result == 1 ? "YOU WIN" :
-                result == 2 ? "YOU LOSE" : "DRAW");
+        resultText.setText(result == 1 ? getString(R.string.win_text) :
+                result == 2 ? getString(R.string.lose_text) : getString(R.string.draw_text));
 
     }
 
@@ -173,10 +193,20 @@ public class MainActivity extends AppCompatActivity {
         set.setInterpolator(new AnticipateOvershootInterpolator());
         set.start();
 
-
-
     }
 
+    /**
+     * Save computer and player move
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putInt("player_move",game.getPlayerMove());
+        outState.putInt("computer_move",game.getGameMove());
+        outState.putInt("result", game.winLoseOrDraw());
+
+    }
 
 }

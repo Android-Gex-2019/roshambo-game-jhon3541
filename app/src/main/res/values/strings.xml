@@ -31,7 +31,7 @@
   -->
 
 <resources>
-    <string name="app_name">Rock Scissors Paper</string>
+    <string name="app_name">Rock Paper Scissors</string>
 
     <string name="title">ro-sham-bo</string>
     <string name="instructions">Pick your move and compete against the computer</string>
@@ -40,4 +40,7 @@
     <string name="scissors_text">Scissors</string>
     <string name="player_result">Player Result</string>
     <string name="computer_result">Computer Result</string>
+    <string name="win_text">YOU WIN</string>
+    <string name="lose_text">YOU LOSE</string>
+    <string name="draw_text">DRAW</string>
 </resources>
